@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce-project-app",
+  "version": "1.0.0",
+  "description": "This is a virtual store project designed for training purposes. It simulates an online shopping platform where users can browse products, add items to a cart, and complete purchases. Built with HTML, CSS, JavaScript, Node.js, Angular. This project demonstrates basic e-commerce functionalities.",
+  "homepage": "https://github.com/Eric-VB/ecommerce-project-app#readme",
+  "bugs": {
+    "url": "https://github.com/Eric-VB/ecommerce-project-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eric-VB/ecommerce-project-app.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
