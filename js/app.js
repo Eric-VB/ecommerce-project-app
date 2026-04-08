@@ -1,391 +1,201 @@
-// E-commerce Project - JavaScript Principal
-// Home Page - TechStore
-// Data: 2024
+// ===== APLICAÇÃO DE LOJA SIMPLES PARA APRENDIZADO =====
 
-// ========== DADOS MOCKADOS ==========
-const produtosDestaque = [
+// 1. DADOS DOS PRODUTOS
+const produtos = [
     {
         id: 1,
-        nome: "iPhone 15 Pro",
-        preco: 8999.99,
-        imagem: "https://via.placeholder.com/300x300/000000/FFFFFF?text=iPhone+15+Pro",
-        descricao: "O mais avançado iPhone com chip A17 Pro e câmera de 48MP",
-        categoria: "Celulares",
-        estoque: 12,
-        destaque: true,
-        desconto: 10
+        nome: "iPhone 15",
+        preco: 3999,
+        imagem: "https://via.placeholder.com/200x150/000/FFF?text=iPhone+15",
+        desconto: 10,
+        estoque: 5
     },
     {
         id: 2,
-        nome: "MacBook Air M3",
-        preco: 12999.99,
-        imagem: "https://via.placeholder.com/300x300/007ACC/FFFFFF?text=MacBook+Air+M3",
-        descricao: "Ultrafino com chip M3, 8GB RAM, SSD 256GB",
-        categoria: "Notebooks",
-        estoque: 8,
-        destaque: true,
-        desconto: 5
+        nome: "MacBook Air",
+        preco: 7999,
+        imagem: "https://via.placeholder.com/200x150/222/FFF?text=MacBook",
+        desconto: 0,
+        estoque: 3
     },
     {
         id: 3,
-        nome: "AirPods Pro (2ª geração)",
-        preco: 1899.99,
-        imagem: "https://via.placeholder.com/300x300/FFFFFF/000000?text=AirPods+Pro",
-        descricao: "Cancelamento ativo de ruído, áudio espacial, resistência à água",
-        categoria: "Áudio",
-        estoque: 25,
-        destaque: true
+        nome: "AirPods Pro",
+        preco: 1899,
+        imagem: "https://via.placeholder.com/200x150/444/FFF?text=AirPods",
+        desconto: 15,
+        estoque: 10
     },
     {
         id: 4,
         nome: "iPad Air",
-        preco: 4999.99,
-        imagem: "https://via.placeholder.com/300x300/C0C0C0/000000?text=iPad+Air",
-        descricao: "10.9 polegadas, chip M2, compatível com Apple Pencil Pro",
-        categoria: "Tablets",
-        estoque: 15,
-        destaque: true,
-        desconto: 15
+        preco: 4999,
+        imagem: "https://via.placeholder.com/200x150/666/FFF?text=iPad",
+        desconto: 5,
+        estoque: 0
     }
 ];
 
-// ========== ESTADO DA APLICAÇÃO ==========
+// 2. ESTADO DO CARRINHO
 let carrinho = [];
 
-// ========== FUNÇÕES UTILITÁRIAS ==========
-function formatarPreco(preco) {
-    return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    }).format(preco);
-}
-
-function salvarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
-
-function carregarCarrinho() {
-    const carrinhoSalvo = localStorage.getItem('carrinho');
-    if (carrinhoSalvo) {
-        carrinho = JSON.parse(carrinhoSalvo);
-        atualizarCarrinho();
-    }
-}
-
-function calcularPrecoComDesconto(produto) {
-    if (produto.desconto) {
-        return produto.preco * (1 - produto.desconto / 100);
-    }
-    return produto.preco;
-}
-
-// ========== FUNÇÕES DE PRODUTOS ==========
-function criarCardProdutoDestaque(produto) {
-    const precoOriginal = produto.preco;
-    const precoComDesconto = calcularPrecoComDesconto(produto);
-    const temDesconto = produto.desconto > 0;
-
-    return `
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
-            ${produto.desconto ? `<div class="bg-red-500 text-white text-xs font-bold px-3 py-1 absolute top-3 left-3 rounded-full z-10">-${produto.desconto}%</div>` : ''}
-
-            <div class="relative overflow-hidden">
-                <img src="${produto.imagem}" alt="${produto.nome}"
-                     class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
-            </div>
-
-            <div class="p-6">
-                <div class="mb-3">
-                    <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full mb-2">
-                        ${produto.categoria}
-                    </span>
+// 3. FUNÇÃO: Renderizar produtos na página
+function renderizarProdutos() {
+    const container = document.getElementById('produtos');
+    
+    container.innerHTML = produtos.map(produto => {
+        // Calcular preço com desconto
+        const precoComDesconto = produto.preco * (1 - produto.desconto / 100);
+        
+        return `
+            <div class="produto-card">
+                ${produto.desconto > 0 ? `<span class="produto-desconto">-${produto.desconto}%</span>` : ''}
+                <img src="${produto.imagem}" alt="${produto.nome}">
+                <h3>${produto.nome}</h3>
+                <p class="produto-estoque">Estoque: ${produto.estoque}</p>
+                
+                <div class="produto-preco">
+                    ${produto.desconto > 0 ? `
+                        <span style="text-decoration: line-through; color: #999; size: 14px;">R$ ${produto.preco.toFixed(2)}</span><br>
+                        R$ ${precoComDesconto.toFixed(2)}
+                    ` : `
+                        R$ ${produto.preco.toFixed(2)}
+                    `}
                 </div>
-
-                <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">${produto.nome}</h3>
-                <p class="text-gray-600 text-sm mb-4 line-clamp-2">${produto.descricao}</p>
-
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex flex-col">
-                        ${temDesconto ? `
-                            <span class="text-2xl font-bold text-green-600">${formatarPreco(precoComDesconto)}</span>
-                            <span class="text-sm text-gray-500 line-through">${formatarPreco(precoOriginal)}</span>
-                        ` : `
-                            <span class="text-2xl font-bold text-green-600">${formatarPreco(precoOriginal)}</span>
-                        `}
-                    </div>
-                    <div class="text-right">
-                        <div class="text-sm text-gray-500">Estoque</div>
-                        <div class="font-semibold ${produto.estoque > 10 ? 'text-green-600' : produto.estoque > 0 ? 'text-yellow-600' : 'text-red-600'}">
-                            ${produto.estoque} un
-                        </div>
-                    </div>
-                </div>
-
-                <button onclick="adicionarAoCarrinho(${produto.id})"
-                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 ${produto.estoque === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
+                
+                <button class="btn-adicionar" 
+                        onclick="adicionarAoCarrinho(${produto.id})"
                         ${produto.estoque === 0 ? 'disabled' : ''}>
-                    ${produto.estoque === 0 ? 'Indisponível' : '<i class="fas fa-cart-plus mr-2"></i>Adicionar ao Carrinho'}
+                    ${produto.estoque === 0 ? 'Fora de Estoque' : 'Adicionar ao Carrinho'}
                 </button>
             </div>
-        </div>
-    `;
+        `;
+    }).join('');
 }
 
-function renderizarProdutosDestaque() {
-    const container = document.getElementById('featured-products');
-    if (!container) return;
-
-    container.innerHTML = produtosDestaque.map(produto => criarCardProdutoDestaque(produto)).join('');
-}
-
-// ========== FUNÇÕES DO CARRINHO ==========
+// 4. FUNÇÃO: Adicionar produto ao carrinho
 function adicionarAoCarrinho(produtoId) {
-    const produto = produtosDestaque.find(p => p.id === produtoId);
-    if (!produto || produto.estoque === 0) return;
-
+    // Encontrar o produto
+    const produto = produtos.find(p => p.id === produtoId);
+    
+    if (!produto || produto.estoque === 0) {
+        mostrarNotificacao('Produto não disponível!', 'error');
+        return;
+    }
+    
+    // Verificar se já está no carrinho
     const itemExistente = carrinho.find(item => item.id === produtoId);
-
+    
     if (itemExistente) {
-        if (itemExistente.quantidade < produto.estoque) {
-            itemExistente.quantidade++;
-        } else {
-            mostrarNotificacao('Quantidade máxima em estoque atingida!', 'warning');
-            return;
-        }
+        // Se já existe, aumentar quantidade
+        itemExistente.quantidade++;
     } else {
+        // Se não existe, adicionar novo
         carrinho.push({
             id: produto.id,
             nome: produto.nome,
-            preco: calcularPrecoComDesconto(produto),
-            imagem: produto.imagem,
+            preco: produto.preco * (1 - produto.desconto / 100),
             quantidade: 1
         });
     }
-
-    salvarCarrinho();
+    
+    // Atualizar a interface
     atualizarCarrinho();
-    mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`, 'success');
+    mostrarNotificacao(`${produto.nome} adicionado!`, 'success');
 }
 
-function removerDoCarrinho(produtoId) {
-    carrinho = carrinho.filter(item => item.id !== produtoId);
-    salvarCarrinho();
-    atualizarCarrinho();
-}
-
-function alterarQuantidade(produtoId, novaQuantidade) {
-    if (novaQuantidade <= 0) {
-        removerDoCarrinho(produtoId);
+// 5. FUNÇÃO: Atualizar carrinho (contador + conteúdo)
+function atualizarCarrinho() {
+    // Atualizar contador
+    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    document.getElementById('cart-count').textContent = totalItens;
+    
+    // Renderizar itens do carrinho
+    const carrinhoContainer = document.getElementById('cart-items');
+    
+    if (carrinho.length === 0) {
+        carrinhoContainer.innerHTML = `
+            <p style="text-align: center; color: #999; padding: 30px;">
+                Seu carrinho está vazio
+            </p>
+        `;
+        document.getElementById('cart-total').classList.add('hidden');
         return;
     }
+    
+    // Mostrar itens
+    carrinhoContainer.innerHTML = carrinho.map(item => `
+        <div class="cart-item">
+            <div class="cart-item-info">
+                <h4>${item.nome}</h4>
+                <p class="cart-item-price">R$ ${item.preco.toFixed(2)}</p>
+            </div>
+            
+            <div class="cart-item-quantity">
+                <button class="qty-btn" onclick="diminuirQuantidade(${item.id})">-</button>
+                <span>${item.quantidade}</span>
+                <button class="qty-btn" onclick="aumentarQuantidade(${item.id})">+</button>
+                <button class="remove-btn" onclick="removerDoCarrinho(${item.id})">Remover</button>
+            </div>
+        </div>
+    `).join('');
+    
+    // Calcular e mostrar total
+    const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
+    document.getElementById('total-price').textContent = 'R$ ' + total.toFixed(2);
+    document.getElementById('cart-total').classList.remove('hidden');
+}
 
+// 6. FUNÇÃO: Aumentar quantidade
+function aumentarQuantidade(produtoId) {
     const item = carrinho.find(item => item.id === produtoId);
-    const produto = produtosDestaque.find(p => p.id === produtoId);
-
-    if (item && novaQuantidade <= produto.estoque) {
-        item.quantidade = novaQuantidade;
-        salvarCarrinho();
+    if (item) {
+        item.quantidade++;
         atualizarCarrinho();
     }
 }
 
-function atualizarCarrinho() {
-    // Atualizar contador do carrinho
-    const totalItens = carrinho.reduce((total, item) => total + item.quantidade, 0);
-    const cartCount = document.getElementById('cart-count');
-
-    if (totalItens > 0) {
-        cartCount.textContent = totalItens;
-        cartCount.classList.remove('hidden');
-    } else {
-        cartCount.classList.add('hidden');
+// 7. FUNÇÃO: Diminuir quantidade
+function diminuirQuantidade(produtoId) {
+    const item = carrinho.find(item => item.id === produtoId);
+    if (item) {
+        if (item.quantidade > 1) {
+            item.quantidade--;
+        } else {
+            removerDoCarrinho(produtoId);
+        }
+        atualizarCarrinho();
     }
-
-    // Atualizar modal do carrinho
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-
-    if (carrinho.length === 0) {
-        cartItems.innerHTML = `
-            <div class="text-center py-8">
-                <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
-                <p class="text-gray-500">Seu carrinho está vazio</p>
-                <p class="text-sm text-gray-400 mt-2">Adicione alguns produtos!</p>
-            </div>
-        `;
-        cartTotal.classList.add('hidden');
-        return;
-    }
-
-    cartItems.innerHTML = carrinho.map(item => `
-        <div class="flex items-center justify-between py-4 border-b border-gray-100 last:border-b-0">
-            <div class="flex items-center space-x-4">
-                <img src="${item.imagem}" alt="${item.nome}" class="w-16 h-16 object-cover rounded-lg">
-                <div>
-                    <h4 class="font-semibold text-gray-800 text-sm">${item.nome}</h4>
-                    <p class="text-gray-600 text-sm">${formatarPreco(item.preco)}</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="alterarQuantidade(${item.id}, ${item.quantidade - 1})"
-                        class="text-gray-400 hover:text-gray-600 p-1">
-                    <i class="fas fa-minus text-sm"></i>
-                </button>
-                <span class="font-medium text-sm w-8 text-center">${item.quantidade}</span>
-                <button onclick="alterarQuantidade(${item.id}, ${item.quantidade + 1})"
-                        class="text-gray-400 hover:text-gray-600 p-1">
-                    <i class="fas fa-plus text-sm"></i>
-                </button>
-                <button onclick="removerDoCarrinho(${item.id})"
-                        class="text-red-400 hover:text-red-600 p-1 ml-2">
-                    <i class="fas fa-trash text-sm"></i>
-                </button>
-            </div>
-        </div>
-    `).join('');
-
-    // Calcular e mostrar total
-    const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
-    document.getElementById('total-price').textContent = formatarPreco(total);
-    cartTotal.classList.remove('hidden');
 }
 
-// ========== FUNÇÕES DE INTERFACE ==========
-function toggleMenu() {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
+// 8. FUNÇÃO: Remover do carrinho
+function removerDoCarrinho(produtoId) {
+    carrinho = carrinho.filter(item => item.id !== produtoId);
+    atualizarCarrinho();
 }
 
+// 9. FUNÇÃO: Abrir/fechar modal do carrinho
 function toggleCarrinho() {
     const modal = document.getElementById('cart-modal');
     modal.classList.toggle('hidden');
 }
 
-function mostrarNotificacao(mensagem, tipo = 'success') {
-    // Criar notificação
-    const notificacao = document.createElement('div');
-    notificacao.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300`;
-
-    if (tipo === 'success') {
-        notificacao.classList.add('bg-green-500', 'text-white');
-        notificacao.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${mensagem}`;
-    } else if (tipo === 'warning') {
-        notificacao.classList.add('bg-yellow-500', 'text-white');
-        notificacao.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>${mensagem}`;
-    } else {
-        notificacao.classList.add('bg-red-500', 'text-white');
-        notificacao.innerHTML = `<i class="fas fa-times-circle mr-2"></i>${mensagem}`;
-    }
-
-    document.body.appendChild(notificacao);
-
-    // Animar entrada
+// 10. FUNÇÃO: Mostrar notificação
+function mostrarNotificacao(mensagem, tipo) {
+    const notif = document.createElement('div');
+    notif.className = `notificacao ${tipo}`;
+    notif.textContent = mensagem;
+    
+    document.body.appendChild(notif);
+    
+    // Remover depois de 3 segundos
     setTimeout(() => {
-        notificacao.classList.remove('translate-x-full');
-    }, 100);
-
-    // Remover após 3 segundos
-    setTimeout(() => {
-        notificacao.classList.add('translate-x-full');
-        setTimeout(() => {
-            notificacao.remove();
-        }, 300);
+        notif.remove();
     }, 3000);
 }
 
-// Smooth scroll para âncoras
-function smoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-}
-
-// ========== EVENT LISTENERS ==========
+// 11. INICIALIZAR QUANDO A PÁGINA CARREGA
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar carrinho do localStorage
-    carregarCarrinho();
-
-    // Renderizar produtos em destaque
-    renderizarProdutosDestaque();
-
-    // Configurar event listeners
-    const menuToggle = document.getElementById('menu-toggle');
-    const cartBtn = document.getElementById('cart-btn');
-    const closeCart = document.getElementById('close-cart');
-    const cartModal = document.getElementById('cart-modal');
-
-    if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
-    if (cartBtn) cartBtn.addEventListener('click', toggleCarrinho);
-    if (closeCart) closeCart.addEventListener('click', toggleCarrinho);
-
-    // Fechar modal do carrinho ao clicar fora
-    if (cartModal) {
-        cartModal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                toggleCarrinho();
-            }
-        });
-    }
-
-    // Smooth scroll
-    smoothScroll();
-
-    // Animações de entrada
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-fade-in');
-            }
-        });
-    }, observerOptions);
-
-    // Observar elementos para animações
-    document.querySelectorAll('.category-card, .product-card').forEach(card => {
-        observer.observe(card);
-    });
-
-    console.log('🏪 TechStore Home Page carregada com sucesso!');
-    console.log(`✨ ${produtosDestaque.length} produtos em destaque`);
+    renderizarProdutos();
+    atualizarCarrinho();
 });
-
-// ========== ANIMAÇÕES CSS ==========
-const style = document.createElement('style');
-style.textContent = `
-    .animate-fade-in {
-        animation: fadeIn 0.6s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-`;
-document.head.appendChild(style);

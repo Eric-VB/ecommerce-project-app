@@ -3,415 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Sua Loja Online de Confiança</title>
-    <meta name="description" content="Encontre os melhores produtos com preços incríveis. Eletrônicos, informática, casa e muito mais na nossa loja virtual.">
-
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS customizado -->
+    <title>Minha Loja</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-gray-50 font-['Inter']">
-    <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-40">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-shopping-bag text-white text-lg"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-gray-800">TechStore</h1>
-                        <p class="text-xs text-gray-500">Sua loja online</p>
-                    </div>
-                </div>
-
-                <!-- Navegação Desktop -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Home</a>
-                    <a href="#produtos" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Produtos</a>
-                    <a href="#categorias" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Categorias</a>
-                    <a href="#sobre" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Sobre</a>
-                    <a href="#contato" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Contato</a>
-                </nav>
-
-                <!-- Ações do Header -->
-                <div class="flex items-center space-x-4">
-                    <!-- Busca -->
-                    <div class="hidden md:block relative">
-                        <input type="text" placeholder="Buscar produtos..."
-                               class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                    </div>
-
-                    <!-- Carrinho -->
-                    <button id="cart-btn" class="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
-                    </button>
-
-                    <!-- Menu Mobile -->
-                    <button id="menu-toggle" class="md:hidden text-gray-700 p-2">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Menu Mobile -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-gray-200">
-                <div class="py-2 md:hidden">
-                    <input type="text" placeholder="Buscar produtos..."
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 mt-2 ml-3"></i>
-                </div>
-                <nav class="flex flex-col space-y-3 mt-4">
-                    <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors py-2 font-medium">Home</a>
-                    <a href="#produtos" class="text-gray-700 hover:text-blue-600 transition-colors py-2 font-medium">Produtos</a>
-                    <a href="#categorias" class="text-gray-700 hover:text-blue-600 transition-colors py-2 font-medium">Categorias</a>
-                    <a href="#sobre" class="text-gray-700 hover:text-blue-600 transition-colors py-2 font-medium">Sobre</a>
-                    <a href="#contato" class="text-gray-700 hover:text-blue-600 transition-colors py-2 font-medium">Contato</a>
-                </nav>
-            </div>
+<body>
+    <!-- CABEÇALHO -->
+    <header class="header">
+        <div class="container">
+            <h1>🛍️ Minha Loja</h1>
+            <button class="cart-btn" onclick="toggleCarrinho()">
+                🛒 Carrinho (<span id="cart-count">0</span>)
+            </button>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white py-20">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                    Bem-vindo à <span class="text-yellow-300">TechStore</span>
-                </h2>
-                <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed">
-                    Sua loja online completa para tecnologia, eletrônicos e muito mais.
-                    Produtos de qualidade com os melhores preços do mercado.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#produtos" class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                        <i class="fas fa-shopping-bag mr-2"></i>Ver Produtos
-                    </a>
-                    <a href="#categorias" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
-                        <i class="fas fa-tags mr-2"></i>Explorar Categorias
-                    </a>
-                </div>
-            </div>
+    <!-- LISTA DE PRODUTOS -->
+    <main class="container">
+        <h2>Produtos Disponíveis</h2>
+        <div id="produtos" class="produtos-grid">
+            <!-- Produtos aparecem aqui -->
         </div>
-    </section>
+    </main>
 
-    <!-- Estatísticas -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div class="group">
-                    <div class="text-4xl font-bold text-blue-600 mb-2 group-hover:scale-110 transition-transform">10k+</div>
-                    <p class="text-gray-600 font-medium">Produtos</p>
-                </div>
-                <div class="group">
-                    <div class="text-4xl font-bold text-green-600 mb-2 group-hover:scale-110 transition-transform">50k+</div>
-                    <p class="text-gray-600 font-medium">Clientes</p>
-                </div>
-                <div class="group">
-                    <div class="text-4xl font-bold text-purple-600 mb-2 group-hover:scale-110 transition-transform">99%</div>
-                    <p class="text-gray-600 font-medium">Satisfação</p>
-                </div>
-                <div class="group">
-                    <div class="text-4xl font-bold text-orange-600 mb-2 group-hover:scale-110 transition-transform">24/7</div>
-                    <p class="text-gray-600 font-medium">Suporte</p>
-                </div>
+    <!-- MODAL DO CARRINHO -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Seu Carrinho</h2>
+                <button class="close-btn" onclick="toggleCarrinho()">✕</button>
             </div>
-        </div>
-    </section>
-
-    <!-- Categorias Populares -->
-    <section id="categorias" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h3 class="text-4xl font-bold text-gray-800 mb-4">Categorias Populares</h3>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Explore nossas categorias mais procuradas e encontre exatamente o que você precisa
-                </p>
+            
+            <div id="cart-items" class="cart-items-container">
+                <!-- Items do carrinho aparecem aqui -->
             </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                        <i class="fas fa-mobile-alt text-2xl text-blue-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">Celulares</h4>
-                    <p class="text-sm text-gray-600">+500 produtos</p>
-                </div>
-
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-                        <i class="fas fa-laptop text-2xl text-green-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">Notebooks</h4>
-                    <p class="text-sm text-gray-600">+300 produtos</p>
-                </div>
-
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-                        <i class="fas fa-headphones text-2xl text-purple-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">Áudio</h4>
-                    <p class="text-sm text-gray-600">+200 produtos</p>
-                </div>
-
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-red-200 transition-colors">
-                        <i class="fas fa-tv text-2xl text-red-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">TVs</h4>
-                    <p class="text-sm text-gray-600">+150 produtos</p>
-                </div>
-
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-yellow-200 transition-colors">
-                        <i class="fas fa-gamepad text-2xl text-yellow-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">Games</h4>
-                    <p class="text-sm text-gray-600">+400 produtos</p>
-                </div>
-
-                <div class="category-card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center group cursor-pointer">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-200 transition-colors">
-                        <i class="fas fa-home text-2xl text-indigo-600"></i>
-                    </div>
-                    <h4 class="font-semibold text-gray-800 mb-2">Casa</h4>
-                    <p class="text-sm text-gray-600">+600 produtos</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Produtos em Destaque -->
-    <section id="produtos" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h3 class="text-4xl font-bold text-gray-800 mb-4">Produtos em Destaque</h3>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Conheça nossos produtos mais populares e vendidos do mês
-                </p>
-            </div>
-
-            <div id="featured-products" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Os produtos serão carregados via JavaScript -->
-            </div>
-
-            <div class="text-center mt-12">
-                <a href="pages/produtos.html" class="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-700 transition-colors shadow-lg">
-                    <i class="fas fa-eye mr-2"></i>Ver Todos os Produtos
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Benefícios -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h3 class="text-4xl font-bold text-gray-800 mb-4">Por que escolher a TechStore?</h3>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Oferecemos a melhor experiência de compra online com garantias e benefícios exclusivos
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center p-6">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-shield-alt text-3xl text-green-600"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-4">Compra Segura</h4>
-                    <p class="text-gray-600 leading-relaxed">
-                        Seus dados estão protegidos com criptografia SSL e processos de pagamento certificados.
-                    </p>
-                </div>
-
-                <div class="text-center p-6">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-truck text-3xl text-blue-600"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-4">Entrega Rápida</h4>
-                    <p class="text-gray-600 leading-relaxed">
-                        Receba seus produtos em até 48 horas com nosso serviço de entrega expressa.
-                    </p>
-                </div>
-
-                <div class="text-center p-6">
-                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-headset text-3xl text-purple-600"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-800 mb-4">Suporte 24/7</h4>
-                    <p class="text-gray-600 leading-relaxed">
-                        Nossa equipe está sempre pronta para ajudar você com qualquer dúvida ou problema.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div class="container mx-auto px-4 text-center">
-            <div class="max-w-2xl mx-auto">
-                <h3 class="text-4xl font-bold mb-4">Fique por Dentro das Novidades</h3>
-                <p class="text-xl mb-8 text-blue-100">
-                    Receba ofertas exclusivas, lançamentos e dicas especiais no seu e-mail
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                    <input type="email" placeholder="Seu melhor e-mail"
-                           class="flex-1 px-6 py-4 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
-                    <button class="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap">
-                        <i class="fas fa-paper-plane mr-2"></i>Inscrever-se
-                    </button>
-                </div>
-
-                <p class="text-sm text-blue-200 mt-4">
-                    Respeitamos sua privacidade. Cancele a qualquer momento.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contato" class="bg-gray-900 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Sobre -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-shopping-bag text-white"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-bold">TechStore</h4>
-                            <p class="text-sm text-gray-400">Sua loja online</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 leading-relaxed mb-6">
-                        A TechStore é sua loja online de confiança para encontrar os melhores produtos tecnológicos com preços competitivos e entrega rápida.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-facebook-f text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fab fa-youtube text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Links Rápidos -->
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Links Rápidos</h4>
-                    <ul class="space-y-3 text-gray-300">
-                        <li><a href="#produtos" class="hover:text-white transition-colors">Produtos</a></li>
-                        <li><a href="#categorias" class="hover:text-white transition-colors">Categorias</a></li>
-                        <li><a href="pages/carrinho.html" class="hover:text-white transition-colors">Carrinho</a></li>
-                        <li><a href="pages/login.html" class="hover:text-white transition-colors">Minha Conta</a></li>
-                    </ul>
-                </div>
-
-                <!-- Categorias -->
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Categorias</h4>
-                    <ul class="space-y-3 text-gray-300">
-                        <li><a href="#" class="hover:text-white transition-colors">Celulares</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Notebooks</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Áudio</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">TVs</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contato -->
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Contato</h4>
-                    <div class="space-y-3 text-gray-300">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt w-5"></i>
-                            <span class="ml-3">São Paulo, SP - Brasil</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-phone w-5"></i>
-                            <span class="ml-3">(11) 9999-9999</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope w-5"></i>
-                            <span class="ml-3">contato@techstore.com</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-clock w-5"></i>
-                            <span class="ml-3">Seg-Sex: 8h às 18h</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Copyright -->
-            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
-                <p class="text-gray-400">
-                    &copy; 2024 TechStore. Todos os direitos reservados.
-                    <span class="mx-2">|</span>
-                    <a href="pages/politica-privacidade.html" class="hover:text-white transition-colors">Política de Privacidade</a>
-                    <span class="mx-2">|</span>
-                    <a href="pages/termos-uso.html" class="hover:text-white transition-colors">Termos de Uso</a>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal do Carrinho -->
-    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-xl max-w-lg w-full max-h-96 overflow-hidden shadow-2xl">
-                <div class="p-6 border-b border-gray-200">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xl font-bold text-gray-800">Seu Carrinho</h3>
-                        <button id="close-cart" class="text-gray-400 hover:text-gray-600 transition-colors">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="cart-items" class="p-6 max-h-64 overflow-y-auto">
-                    <div class="text-center py-8">
-                        <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500">Seu carrinho está vazio</p>
-                        <p class="text-sm text-gray-400 mt-2">Adicione alguns produtos!</p>
-                    </div>
-                </div>
-
-                <div id="cart-total" class="p-6 border-t border-gray-200 hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-lg font-semibold text-gray-800">Total:</span>
-                        <span id="total-price" class="text-2xl font-bold text-green-600">R$ 0,00</span>
-                    </div>
-                    <a href="pages/checkout.html" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold text-center hover:bg-green-700 transition-colors block">
-                        <i class="fas fa-credit-card mr-2"></i>Finalizar Compra
-                    </a>
-                </div>
+            
+            <div id="cart-total" class="cart-total hidden">
+                <p>Total: <strong id="total-price">R$ 0,00</strong></p>
+                <button class="checkout-btn">Finalizar Compra</button>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- SCRIPTS -->
     <script src="js/app.js"></script>
 </body>
 </html>
