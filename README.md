@@ -48,7 +48,7 @@ Define o comportamento:
 **Arrays de Objetos:**
 ```javascript
 const produtos = [
-    { id: 1, nome: "iPhone", preco: 3999, desconto: 10 },
+    { id: 1, nome: "iPhone", preco: 3999, desconto: 10 , imagem: },
     { id: 2, nome: "iPad", preco: 4999, desconto: 5 }
 ];
 ```

@@ -6,7 +6,7 @@ const produtos = [
         id: 1,
         nome: "iPhone 15",
         preco: 3999,
-        imagem: "https://via.placeholder.com/200x150/000/FFF?text=iPhone+15",
+        imagem: "assets/img/iphone.jpg",
         desconto: 10,
         estoque: 5
     },
@@ -14,7 +14,7 @@ const produtos = [
         id: 2,
         nome: "MacBook Air",
         preco: 7999,
-        imagem: "https://via.placeholder.com/200x150/222/FFF?text=MacBook",
+        imagem: "assets/img/macbook.png",
         desconto: 0,
         estoque: 3
     },
@@ -22,7 +22,7 @@ const produtos = [
         id: 3,
         nome: "AirPods Pro",
         preco: 1899,
-        imagem: "https://via.placeholder.com/200x150/444/FFF?text=AirPods",
+        imagem: "assets/img/airpods-pro.png",
         desconto: 15,
         estoque: 10
     },
@@ -30,7 +30,7 @@ const produtos = [
         id: 4,
         nome: "iPad Air",
         preco: 4999,
-        imagem: "https://via.placeholder.com/200x150/666/FFF?text=iPad",
+        imagem: "assets/img/ipad.jpg",
         desconto: 5,
         estoque: 0
     }
