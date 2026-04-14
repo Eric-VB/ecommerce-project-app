@@ -78,10 +78,10 @@ function adicionarAoCarrinho(produtoId) {
     // Encontrar o produto
     const produto = produtos.find(p => p.id === produtoId);
     
-    if (!produto || produto.estoque === 0) {
-        mostrarNotificacao('Produto não disponível!', 'error');
-        return;
-    }
+    // if (!produto || produto.estoque === 0) {
+    //     mostrarNotificacao('Produto não disponível!', 'error');
+    //     return;
+    // }
     
     // Verificar se já está no carrinho
     const itemExistente = carrinho.find(item => item.id === produtoId);
@@ -101,7 +101,7 @@ function adicionarAoCarrinho(produtoId) {
     
     // Atualizar a interface
     atualizarCarrinho();
-    mostrarNotificacao(`${produto.nome} adicionado!`, 'success');
+    // mostrarNotificacao(`${produto.nome} adicionado!`, 'success');
 }
 
 // 5. FUNÇÃO: Atualizar carrinho (contador + conteúdo)
@@ -120,6 +120,7 @@ function atualizarCarrinho() {
             </p>
         `;
         document.getElementById('cart-total').classList.add('hidden');
+        salvarCarrinhoLocalStorage();
         return;
     }
     
@@ -144,6 +145,9 @@ function atualizarCarrinho() {
     const total = carrinho.reduce((sum, item) => sum + (item.preco * item.quantidade), 0);
     document.getElementById('total-price').textContent = 'R$ ' + total.toFixed(2);
     document.getElementById('cart-total').classList.remove('hidden');
+
+    // Persistir carrinho no localStorage sempre que for atualizado
+    salvarCarrinhoLocalStorage();
 }
 
 // 6. FUNÇÃO: Aumentar quantidade
@@ -168,6 +172,24 @@ function diminuirQuantidade(produtoId) {
     }
 }
 
+// 12. FUNÇÃO: Salvar carrinho no localStorage
+function salvarCarrinhoLocalStorage() {
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+}
+
+// 13. FUNÇÃO: Carregar carrinho do localStorage
+function carregarCarrinhoLocalStorage() {
+    const carrinhoJSON = localStorage.getItem('carrinho');
+    if (!carrinhoJSON) return;
+
+    try {
+        carrinho = JSON.parse(carrinhoJSON);
+    } catch (error) {
+        carrinho = [];
+        console.error('Erro ao carregar carrinho do localStorage:', error);
+    }
+}
+
 // 8. FUNÇÃO: Remover do carrinho
 function removerDoCarrinho(produtoId) {
     carrinho = carrinho.filter(item => item.id !== produtoId);
@@ -181,21 +203,22 @@ function toggleCarrinho() {
 }
 
 // 10. FUNÇÃO: Mostrar notificação
-function mostrarNotificacao(mensagem, tipo) {
-    const notif = document.createElement('div');
-    notif.className = `notificacao ${tipo}`;
-    notif.textContent = mensagem;
+// function mostrarNotificacao(mensagem, tipo) {
+//     const notif = document.createElement('div');
+//     notif.className = `notificacao ${tipo}`;
+//     notif.textContent = mensagem;
     
-    document.body.appendChild(notif);
+//     document.body.appendChild(notif);
     
-    // Remover depois de 3 segundos
-    setTimeout(() => {
-        notif.remove();
-    }, 3000);
-}
+//     // Remover depois de 3 segundos
+//     setTimeout(() => {
+//         notif.remove();
+//     }, 3000);
+// }
 
 // 11. INICIALIZAR QUANDO A PÁGINA CARREGA
 document.addEventListener('DOMContentLoaded', function() {
+    carregarCarrinhoLocalStorage();
     renderizarProdutos();
     atualizarCarrinho();
 });
